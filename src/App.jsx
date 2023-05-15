@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
+import TodoList from "./components/TodoList";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [text, setText] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  const handleAdd = () => {
+    setTodos([...todos, text]);
+    setText("");
+  };
+
+  const handleDelete = (indexToRemove) => {
+    const newTodos = todos.filter((todo, index) => {
+      if (index === indexToRemove) {
+        return;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Box
+        sx={{
+          width: 300,
+          height: 200,
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <TextField
+          id="filled-basic"
+          label="Enter todo"
+          placeholder="water plants"
+          variant="filled"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <Button variant="contained" size="large" onClick={handleAdd}>
+          Add{" "}
+        </Button>
+      </Box>
+      <TodoList todos={todos} handleDelete={handleDelete} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
